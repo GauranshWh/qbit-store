@@ -4,8 +4,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import SpecTable from "@/components/product/SpecTable";
 import ProductCard from "@/components/product/ProductCard";
+import AddToCartButton from "@/components/cart/AddToCartButton";
+import SpecTable from "@/components/product/SpecTable";
 
 export async function generateStaticParams() {
   const products = await db.product.findMany({
@@ -112,13 +113,13 @@ export default async function ProductDetailPage(
                   </p>
                 )}
                 
-                {/* TODO: Wire up real cart functionality */}
-                <button 
-                  className={buttonVariants({ size: "lg", className: "w-full text-lg" })}
-                  disabled={product.stock === 0}
-                >
-                  Add to Cart
-                </button>
+                <AddToCartButton product={{
+                  id: product.id,
+                  slug: product.slug,
+                  name: product.name,
+                  priceCents: product.priceCents!,
+                  stock: product.stock
+                }} />
               </div>
             ) : (
               <div className="space-y-6">
